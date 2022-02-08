@@ -16,18 +16,18 @@ class Login extends React.Component {
     };
   }
 
-  handleLoginValidate = ({ target }) => {
-    const { value } = target;
-    this.setState(({
-      name: value,
-    }), () => {
-      const { name } = this.state;
-      const minLenght = 3;
-      if (name.length >= minLenght) {
-        this.setState({ submitButton: false });
-      } else { this.setState({ submitButton: true }); }
-    });
-  }
+    handleLoginValidate = ({ target }) => {
+      const { value } = target;
+      this.setState(({
+        name: value,
+      }), () => {
+        const { name } = this.state;
+        const minLenght = 3;
+        if (name.length >= minLenght) {
+          this.setState({ submitButton: false });
+        } else { this.setState({ submitButton: true }); }
+      });
+    }
 
   handleClick = async () => {
     this.setState({ loadPage: true });
@@ -42,25 +42,27 @@ class Login extends React.Component {
       return redirect ? <Redirect to="/search" /> : <Loading />;
     }
     return (
-      <form>
-        <label htmlFor="login">
-          <input
-            data-testid="login-name-input"
-            type="text"
-            id="login"
-            value={ name }
-            onChange={ this.handleLoginValidate }
-          />
-        </label>
-        <button
-          type="submit"
-          disabled={ submitButton }
-          onClick={ this.handleClick }
-          data-testid="login-submit-button"
-        >
-          Entrar
-        </button>
-      </form>
+      <div data-testid="page-login">
+        <form>
+          <label htmlFor="login">
+            <input
+              data-testid="login-name-input"
+              type="text"
+              id="login"
+              value={ name }
+              onChange={ this.handleLoginValidate }
+            />
+          </label>
+          <button
+            type="submit"
+            disabled={ submitButton }
+            onClick={ this.handleClick }
+            data-testid="login-submit-button"
+          >
+            Entrar
+          </button>
+        </form>
+      </div>
     );
   }
 }
