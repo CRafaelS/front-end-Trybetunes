@@ -2,6 +2,8 @@ import React from 'react';
 import Loading from '../pages/Loading';
 import { getUser } from '../services/userAPI';
 
+// Desenvolvido com ajuda do Léo, Calili e Genivaldo
+
 class Header extends React.Component {
   state = {
     name: '',
