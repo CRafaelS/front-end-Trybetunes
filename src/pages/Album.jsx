@@ -4,7 +4,9 @@ import Header from '../components/Header';
 import getMusics from '../services/musicsAPI';
 import Loading from './Loading';
 import MusicCard from '../components/MusicCard';
+import { addSong, removeSong } from '../services/favoriteSongsAPI';
 
+// Requisito 08 com a ajuda do Laecio
 class Album extends React.Component {
   constructor() {
     super();
@@ -12,6 +14,7 @@ class Album extends React.Component {
       albumMusic: [],
       loadPage: true,
       musics: [],
+      favorites: [],
     };
   }
 
@@ -26,8 +29,41 @@ class Album extends React.Component {
     });
   }
 
+  handleFavoriteSong = async (trackId) => {
+    const { musics, favorites } = this.state;
+    const song = musics.find((element) => (
+      element.trackId === trackId
+    ));
+    const songFind = favorites.find((element) => (
+      element.trackId === trackId
+    ));
+    if (songFind) {
+      return this.removeMusic(songFind);
+    }
+    this.setState((prevState) => ({
+      loadPage: true,
+      favorites: [...prevState.favorites, song],
+    }));
+    await addSong(song);
+    this.setState({
+      loadPage: false,
+    });
+  }
+
+  removeMusic = async (songFind) => {
+    this.setState((prevState) => ({
+      favorites: prevState.favorites
+        .filter((elemSong) => elemSong.trackId !== songFind.trackId),
+      loadPage: true,
+    }));
+    await removeSong(songFind);
+    this.setState({
+      loadPage: false,
+    });
+  }
+
   render() {
-    const { albumMusic, loadPage, musics } = this.state;
+    const { albumMusic, loadPage, musics, favorites } = this.state;
     return (
       <div data-testid="page-album">
         <Header />
@@ -36,14 +72,18 @@ class Album extends React.Component {
             <section>
               <h1 data-testid="artist-name">{albumMusic[0].artistName}</h1>
               <h2 data-testid="album-name">{albumMusic[0].collectionName}</h2>
-              <ul>
-                {musics.map((music) => (
-                  <MusicCard
-                    key={ music.trackNumber }
-                    trackName={ music.trackName }
-                  />
-                ))}
-              </ul>
+              <div>
+                {loadPage ? <Loading />
+                  : (musics.map((music) => (
+                    <MusicCard
+                      key={ music.trackNumber }
+                      { ... music }
+                      handleFavoriteSong={ this.handleFavoriteSong }
+                      checked={ favorites
+                        .some((elemSong) => elemSong.trackId === music.trackId) }
+                    />
+                  )))}
+              </div>
             </section>
           )}
       </div>
