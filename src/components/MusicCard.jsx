@@ -5,7 +5,7 @@ class MusicCard extends Component {
   render() {
     const { trackName, previewUrl, trackId, handleFavoriteSong, checked } = this.props;
     return (
-      <div>
+      <li>
         <p>{ trackName}</p>
         <audio data-testid="audio-component" src={ previewUrl } controls>
           <track kind="captions" />
@@ -22,7 +22,7 @@ class MusicCard extends Component {
           />
           Favorita
         </label>
-      </div>
+      </li>
     );
   }
 }

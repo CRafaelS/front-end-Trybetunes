@@ -75,18 +75,18 @@ class Album extends React.Component {
             <section>
               <h1 data-testid="artist-name">{albumMusic[0].artistName}</h1>
               <h2 data-testid="album-name">{albumMusic[0].collectionName}</h2>
-              <div>
+              <ul>
                 {loadPage ? <Loading />
                   : (musics.map((music) => (
                     <MusicCard
-                      key={ music.trackNumber }
+                      key={ music.trackId }
                       { ... music }
                       handleFavoriteSong={ this.handleFavoriteSong }
                       checked={ favorites
                         .some((elemSong) => elemSong.trackId === music.trackId) }
                     />
                   )))}
-              </div>
+              </ul>
             </section>
           )}
       </div>
