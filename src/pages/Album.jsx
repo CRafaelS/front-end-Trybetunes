@@ -4,9 +4,10 @@ import Header from '../components/Header';
 import getMusics from '../services/musicsAPI';
 import Loading from './Loading';
 import MusicCard from '../components/MusicCard';
-import { addSong, removeSong } from '../services/favoriteSongsAPI';
+import { addSong, removeSong, getFavoriteSongs } from '../services/favoriteSongsAPI';
 
 // Requisito 08 com a ajuda do Laecio
+
 class Album extends React.Component {
   constructor() {
     super();
@@ -21,11 +22,13 @@ class Album extends React.Component {
   async componentDidMount() {
     const { match: { params: { id } } } = this.props;
     const resultApi = await getMusics(id);
+    const favoritesSong = await getFavoriteSongs();
     this.setState({
       albumMusic: resultApi,
       loadPage: false,
       // https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/slice
       musics: resultApi.slice(1),
+      favorites: favoritesSong,
     });
   }
 
